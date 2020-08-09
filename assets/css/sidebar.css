@@ -119,7 +119,6 @@ ul.CTAs {
 }
 
 ul.CTAs a {
-    text-align: center;
     font-size: 0.9em !important;
     display: block;
     border-radius: 5px;

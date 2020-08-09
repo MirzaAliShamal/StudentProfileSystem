@@ -49,7 +49,7 @@ session_start();
           <div class="form-group">
             <label for="exampleInputEmail1">Student Roll No.</label>
             <select class="form-control" id="rollno" style="width: 100%;" name="student_id">
-            <option>Select Student</option>
+            <option value selected disabled>Select Student</option>
             <?php
               $sql = "SELECT * FROM students";
               if($result = mysqli_query($con, $sql)){
@@ -66,7 +66,7 @@ session_start();
           <div class="form-group">
             <label for="exampleInputEmail1">Scholarship</label>
             <select class="form-control" id="scholarship" style="width: 100%;" name="scholarship_id">
-            <option>Select Scholorship</option>
+            <option value selected disabled>Select Scholorship</option>
             <?php
               $sql = "SELECT * FROM scholarships";
               if($result = mysqli_query($con, $sql)){
@@ -95,7 +95,7 @@ session_start();
           <div class="form-group">
             <label for="exampleInputEmail1">Program</label>
             <select class="form-control" id="programs" style="width: 100%;" name="program_id">
-            <option>Select Scholorship</option>
+              <option value selected disabled>Select Program</option>
             <?php
               $sql = "SELECT * FROM programs";
               if($result = mysqli_query($con, $sql)){
@@ -112,7 +112,7 @@ session_start();
           <div class="form-group">
             <label for="exampleInputEmail1">Semester</label>
             <select class="form-control" id="semester" style="width: 100%;" name="semester">
-              <option>Select Scholorship</option>
+              <option value selected disabled>Select Semester</option>
               <option value="1st">1st</option>
               <option value="2nd">2nd</option>
               <option value="3rd">3rd</option>

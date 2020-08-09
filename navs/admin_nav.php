@@ -9,7 +9,7 @@
                 
             </ul>
 
-            <ul class="list-unstyled CTAs">
+            <ul class="list-unstyled CTAs text-left">
 				<li>
                     <a href="admin_dashboard.php">Dashboard</a>
                 </li>
@@ -37,24 +37,27 @@
                         </li>
                     </ul>
                 </li>
+
+                <li>
+                    <a href="#resultsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Student Results</a>
+                    <ul class="collapse list-unstyled" id="resultsSubmenu">
+                        <li>
+                            <a href="admin_student_result_add.php">Student Result Add</a>
+                        </li>
+                        <li>
+                            <a href="admin_student_result_list.php">Student Result List</a>
+                        </li>
+                    </ul>
+                </li>
                 
                 <li>
                     <a href="#accountsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Accounts</a>
                     <ul class="collapse list-unstyled" id="accountsSubmenu">
 						<li>
-                            <a href="admin_add_voucher.php">Add Voucher</a>
+                            <a href="admin_voucher_add.php">Voucher Add</a>
                         </li>
 						<li>
-                            <a href="admin_recieve_fee.php">Recieve Fee</a>
-                        </li>
-                        <li>
-                            <a href="admin_fee_log.php">Accounts book</a>
-                        </li>
-                        <li>
-                            <a href="admin_fee_readjust.php">Re-Adjust Fee</a>
-                        </li>
-						<li>
-                            <a href="student_fee_history.php">Student Fee History</a>
+                            <a href="admin_voucher_list.php">Voucher Lists</a>
                         </li>
                     </ul>
                 </li>
