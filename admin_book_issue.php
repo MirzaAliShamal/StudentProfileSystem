@@ -95,9 +95,15 @@ if (isset($_POST["submit"])) {
 	$book_id =  $_GET['id'];
 	$student_id =  $_POST["student_id"];
 	
-  $sql = "INSERT INTO `books_issued`(`student_id`, `book_id`, `status`) VALUES ('$student_id','$book_id','issued')";
-  $result = $con->query($sql);
-  echo"<script>alert('Book Issued to the Student');</script>";
+	$validation_sql = "SELECT * FROM books_issued WHERE student_id = '" . $student_id . "' AND book_id = '" . $book_id . "'";
+  	$validation_result = mysqli_query($con, $validation_sql);
+  	if (mysqli_num_rows($validation_result) > 0) {
+	    echo"<script>alert('Sorry, Book Already Issud to this student!');</script>";
+	} else{
+	  	$sql = "INSERT INTO `books_issued`(`student_id`, `book_id`, `status`) VALUES ('$student_id','$book_id','issued')";
+	  	$result = $con->query($sql);
+	  	echo"<script>alert('Book Issued to the Student');</script>";
+	}
 }
 ?>
 			</div>      

@@ -58,9 +58,16 @@ session_start();
 if (isset($_POST["submit"])) {
 	
 	$program =  $_POST["program"];
-  $sql = "INSERT INTO `programs`( `program`) VALUES ('$program')";
-  $result = $con->query($sql);
-  echo"<script>alert('Program Added into system');</script>";
+
+  $validation_sql = "SELECT * FROM programs WHERE program = '" . $program . "'";
+  $validation_result = mysqli_query($con, $validation_sql);
+  if (mysqli_num_rows($validation_result) > 0) {
+    echo"<script>alert('Program Already Exists with this name!');</script>";
+  } else{
+    $sql = "INSERT INTO `programs`( `program`) VALUES ('$program')";
+    $result = $con->query($sql);
+    echo"<script>alert('Program Added into system');</script>";
+  }
 }
 ?>
 </div>

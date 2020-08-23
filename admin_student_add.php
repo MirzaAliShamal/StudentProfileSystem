@@ -151,20 +151,33 @@ if (isset($_POST["submit"])) {
 	$session =  $_POST["session"];
 	$program_id =  $_POST["program_id"];
 
-  $filename   = uniqid() ."-". $_POST['rollno'] . "-" .str_replace(' ', '-', $_POST['name']) . "-profile_img";
-  $extension  = pathinfo( $_FILES["profile_img"]["name"], PATHINFO_EXTENSION );
-  $basename   = $filename . '.' . $extension;
-  $source     = $_FILES["profile_img"]["tmp_name"];
-  $destination= "images/" . $basename;
-	if(move_uploaded_file( $source, $destination )){
-  	$msg = "Image uploaded successfully";
-  }else{
-		$msg = "Failed to upload image";
+  $roll_val_sql = "SELECT rollno FROM students WHERE rollno = '$rollno'";
+  $roll_val_result = $con->query($roll_val_sql);
+  $rollcount = mysqli_num_rows($roll_val_result);
+
+  $email_val_sql = "SELECT email FROM students WHERE email = '$email'";
+  $email_val_result = $con->query($email_val_sql);
+  $emailcount = mysqli_num_rows($email_val_result);
+  if ($rollcount > 0) {
+    echo"<script>alert('Student Rollno already registered into system');</script>";
+  } elseif($rollcount > 0) {
+    echo"<script>alert('Student Email already registered into system');</script>";
+  } else {
+    $filename   = uniqid() ."-". $_POST['rollno'] . "-" .str_replace(' ', '-', $_POST['name']) . "-profile_img";
+    $extension  = pathinfo( $_FILES["profile_img"]["name"], PATHINFO_EXTENSION );
+    $basename   = $filename . '.' . $extension;
+    $source     = $_FILES["profile_img"]["tmp_name"];
+    $destination= "images/" . $basename;
+    if(move_uploaded_file( $source, $destination )){
+      $msg = "Image uploaded successfully";
+    }else{
+      $msg = "Failed to upload image";
+    }
+    
+    $sql = "INSERT INTO `students`( `rollno`, `name`, `father_name`, `cnic`, `dob`, `contact_number`, `address`, `email`, `gender`, `session`, `program_id`, `profile_img`) VALUES ('$rollno','$name','$father_name','$cnic','$dob','$contact_number','$address','$email','$gender','$session','$program_id','$basename')";
+    $result = $con->query($sql);
+    echo"<script>alert('Student Profile Added into system');</script>";
   }
-	
-  $sql = "INSERT INTO `students`( `rollno`, `name`, `father_name`, `cnic`, `dob`, `contact_number`, `address`, `email`, `gender`, `session`, `program_id`, `profile_img`) VALUES ('$rollno','$name','$father_name','$cnic','$dob','$contact_number','$address','$email','$gender','$session','$program_id','$basename')";
-  $result = $con->query($sql);
-  echo"<script>alert('Student Profile Added into system');</script>";
 }
 ?>
 </div>

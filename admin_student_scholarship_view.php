@@ -58,7 +58,7 @@ session_start();
 
 	$id = $_GET['id'];
 	
-		$sql ="SELECT student_scholarships.*,scholarships.name,students.rollno,programs.program FROM student_scholarships INNER JOIN scholarships ON scholarships.id=student_scholarships.scholarship_id INNER JOIN students ON students.id = student_scholarships.student_id INNER JOIN programs ON programs.id = student_scholarships.program_id";
+		$sql ="SELECT student_scholarships.*,scholarships.name,students.rollno,programs.program FROM student_scholarships INNER JOIN scholarships ON scholarships.id=student_scholarships.scholarship_id INNER JOIN students ON students.id = student_scholarships.student_id INNER JOIN programs ON programs.id = student_scholarships.program_id where student_scholarships.id='" . $id . "'";
 if($result = mysqli_query($con, $sql)){
     if(mysqli_num_rows($result) > 0){
         echo "<table class='table table-dark text-center'>";

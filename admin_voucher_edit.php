@@ -43,20 +43,20 @@ session_start();
             </nav>
 			<div class="row">
 			<div class="col-2"></div>
-			<div class="col-8 border bg-dark m-2 p-5 text-white">			
-        <?php  
-$result = mysqli_query($con,"SELECT * FROM results WHERE id='" . $_GET['id'] . "'");
+			<div class="col-8 border bg-dark m-2 p-5 text-white">		
+			        <?php  
+$result = mysqli_query($con,"SELECT * FROM fee_voucher WHERE id='" . $_GET['id'] . "'");
 $row= mysqli_fetch_array($result);
 $rowcount=mysqli_num_rows($result);
   if($rowcount == 0){
     echo"<script>alert('No Record Found.!')
-  location.replace('admin_student_result_list.php')
+  location.replace('admin_voucher_list.php')
 </script>";
   }
-?>
+?>	
 <form method="post" enctype="multipart/form-data">
   <fieldset>
-    <legend class="text-center">Edit Student Result</legend>
+    <legend class="text-center">Edit Voucher</legend>
     
 	<div class="form-group">
 		<label for="student_id">Roll No.</label>
@@ -73,6 +73,29 @@ $rowcount=mysqli_num_rows($result);
 		<script>
 		$("#student_id").select2().select2();
 		</script>
+    </div>
+	<div class="form-group">
+		<label for="voucher_no">Voucher No.</label>
+		<input type="number" class="form-control" value="<?php echo $row['voucher_no'] ?>" name="voucher_no"  id="voucher_no" placeholder="Enter Voucher Number" required>
+    </div>
+	<div class="form-group">
+      	<label for="exampleInputEmail1">Bank</label>
+      	<select class="form-control" id="space" name="bank">
+			<option>Select Bank</option>
+			<option value="HBL" <?php if($row['bank'] == "HBL"){ ?> selected <?php } ?> >HBL</option>
+			<option value="MCB" <?php if($row['bank'] == "MCB"){ ?> selected <?php } ?> >MCB</option>
+			<option value="ABL" <?php if($row['bank'] == "ABL"){ ?> selected <?php } ?> >ABL</option>
+			<option value="UBL" <?php if($row['bank'] == "UBL"){ ?> selected <?php } ?> >UBL</option>
+			<option value="Meezan" <?php if($row['bank'] == "Meezan"){ ?> selected <?php } ?> >Meezan</option>
+			<option value="National" <?php if($row['bank'] == "National"){ ?> selected <?php } ?> >National</option>
+	  	</select>
+	  	<script>
+			$("#space").select2().select2();
+		</script>
+    </div>
+	<div class="form-group">
+      	<label for="amount">Amount</label>
+      	<input type="text" class="form-control" value="<?php echo $row['amount'] ?>" name="amount"  id="amount" placeholder="Enter Amount" required>
     </div>
     <div class="form-group">
       	<label for="session">Session</label>
@@ -107,43 +130,30 @@ $rowcount=mysqli_num_rows($result);
               <option value="7th" <?php if($row['semester'] == "7th"){ ?> selected <?php } ?> >7th</option>
               <option value="8th" <?php if($row['semester'] == "8th"){ ?> selected <?php } ?> >8th</option>
             </select>
+            <script>
 		<script>
 			$("#semester").select2().select2();
 		</script>
     </div>
-            <?php  
-$fail_res = mysqli_query($con,"SELECT course_code FROM failed_courses WHERE result_id='" . $_GET['id'] . "'");
-$f_row= mysqli_fetch_array($fail_res);
-$f_rowcount=mysqli_num_rows($fail_res);
-  if($f_rowcount > 0){
-    $failed_courses =  implode(", ",$f_row);
-    ?>
     <div class="form-group">
-        <label for="course_codes">Failed Courses (If any)</label>
-        <input type="text" class="form-control" name="course_codes" value="<?php echo $failed_courses ?>" id="course_codes" placeholder="e.g. MT203, CS304">
+        <label for="issue_date">Issue Date</label>
+        <div id="datepicker" class="input-group date" data-date-format="dd/mm/yyyy">
+            <input type="text" class="form-control" value="<?php echo $row['issue_date'] ?>" name='issue_date' id="issue_date">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+        </div>
     </div>
-    <?php
-  }else{
-    ?>
+    <script>
+       	$(function () {
+        	$("#datepicker").datepicker({ 
+            	autoclose: true, 
+               	todayHighlight: true
+         	}).datepicker('update', new Date());
+       	});
+    </script>
     <div class="form-group">
-        <label for="course_codes">Failed Courses (If any)</label>
-        <input type="text" class="form-control" name="course_codes"  id="course_codes" placeholder="e.g. MT203, CS304">
-    </div>
-    <?php
-  }
-?>
-    
-    <div class="form-group">
-      	<label for="GPA">GPA</label>
-      	<input type="text" class="form-control" value="<?php echo $row['GPA'] ?>"  name="GPA"  id="GPA" placeholder="4.0" required>
-    </div>
-    <div class="form-group">
-      	<label for="CGPA">CGPA</label>
-      	<input type="text" class="form-control" value="<?php echo $row['CGPA'] ?>" name="CGPA"  id="CGPA" placeholder="4.0" required>
-    </div>
-    <div class="form-group">
-      	<label for="PCGPA">PCGPA</label>
-      	<input type="text" class="form-control" value="<?php echo $row['PCGPA'] ?>" name="PCGPA"  id="PCGPA" placeholder="4.0" required>
+    	<img src="images/vouchers/<?php echo $row['voucher_pic']; ?>" class="img-fluid" width="250"><br>
+		<label for="voucher_pic">Voucher Image</label><br>
+		<input type="file" name="voucher_pic" id="voucher_pic" class="form-control">
     </div>
     <button type="submit" class="btn btn-primary" name="submit">Submit</button>
   </fieldset>
@@ -152,35 +162,40 @@ $f_rowcount=mysqli_num_rows($fail_res);
 
 <?php 
 if (isset($_POST["submit"])) {
-  $id = $_GET['id'];
-  $student_id = $_POST['student_id'];
-  $semester = $_POST['semester'];
-  mysqli_query($con,"UPDATE results set student_id='" . $_POST['student_id'] . "', session='" . $_POST['session'] . "', program_id='" . $_POST['program_id'] . "',semester='" . $_POST['semester'] . "',GPA='" . $_POST['GPA'] . "',CGPA='" . $_POST['CGPA'] . "',PCGPA='" . $_POST['PCGPA'] . "' WHERE id='" . $_GET['id'] . "'");
+	
+	if ($_FILES["voucher_pic"]["size"]>0) {
 
-	if ($_POST["course_codes"]) {
-    $courses = explode(", ",$_POST["course_codes"]);
+    	$filePath = "images/vouchers/" . $row['voucher_pic'];
 
-    $check_fail = mysqli_query($con,"SELECT * FROM failed_courses WHERE result_id='" . $_GET['id'] . "'");
-    $check_fail_count=mysqli_num_rows($fail_res);
-    if ($check_fail_count > 0) {
-      mysqli_query($con,"DELETE FROM failed_courses WHERE result_id = '" . $_GET['id'] . "'");
+    	$result = mysqli_query($con,"SELECT * FROM students WHERE id='" . $student_id . "'");
+	  	$student_data= mysqli_fetch_array($result);
 
-      foreach ($courses as $value) {
-      $sql = "INSERT INTO `failed_courses`( `student_id`, `result_id`, `semester`, `course_code`) VALUES ('$student_id', '$id', '$semester','$value')";
-        $result = $con->query($sql);
-      }
-    } else {
-      foreach ($courses as $value) {
-      $sql = "INSERT INTO `failed_courses`( `student_id`, `result_id`, `semester`, `course_code`) VALUES ('$student_id', '$id', '$semester','$value')";
-        $result = $con->query($sql);
-      }
-    }
-    
-  }
+	  	$filename   = uniqid() ."-". $student_data['rollno'] . "-" .str_replace(' ', '-', $student_data['name']) . "-voucher_img";
+	  	$extension  = pathinfo( $_FILES["voucher_pic"]["name"], PATHINFO_EXTENSION );
+	  	$basename   = $filename . '.' . $extension;
+	  	$source     = $_FILES["voucher_pic"]["tmp_name"];
+	  	$destination= "images/vouchers/" . $basename;
 
-   echo"<script>alert('Record Updated.!')
-          location.replace('admin_student_result_list.php')
+      	if(move_uploaded_file( $source, $destination )){
+          if (file_exists($filePath)) {
+            unlink($filePath);
+          } else {
+            echo "File does not exists"; 
+          }
+
+        mysqli_query($con,"UPDATE fee_voucher set student_id='" . $_POST['student_id'] . "', voucher_no='" . $_POST['voucher_no'] . "', amount='" . $_POST['amount'] . "', bank='" . $_POST['bank'] . "' ,session='" . $_POST['session'] . "',program_id='" . $_POST['program_id'] . "',semester='" . $_POST['semester'] . "',issue_date='" . $_POST['issue_date'] . "', voucher_pic='" . $basename . "' WHERE id='" . $_GET['id'] . "'");
+        echo"<script>alert('Record Updated.!')
+          location.replace('admin_voucher_list.php')
         </script>";
+      }else{
+        $msg = "Failed to upload image";
+      }
+  } else {
+    mysqli_query($con,"UPDATE fee_voucher set student_id='" . $_POST['student_id'] . "', voucher_no='" . $_POST['voucher_no'] . "', amount='" . $_POST['amount'] . "', bank='" . $_POST['bank'] . "' ,session='" . $_POST['session'] . "',program_id='" . $_POST['program_id'] . "',semester='" . $_POST['semester'] . "',issue_date='" . $_POST['issue_date'] . "' WHERE id='" . $_GET['id'] . "'");
+        echo"<script>alert('Record Updated.!')
+          location.replace('admin_voucher_list.php')
+        </script>";
+  }
 }
 ?>
 </div>

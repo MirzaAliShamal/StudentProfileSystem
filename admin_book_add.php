@@ -87,9 +87,15 @@ if (isset($_POST["submit"])) {
   $copies =  $_POST["copies"];
   $publishers =  $_POST["publishers"];
 
-  $sql = "INSERT INTO `books`(`book_name`, `author`, `book_category_id`, `copies`, `publishers`) VALUES ('$book_name','$author','$book_category_id','$copies','$publishers')";
-  $result = $con->query($sql);
-  echo"<script>alert('Book Added into system');</script>";
+  $validation_sql = "SELECT * FROM books WHERE book_name = '" . $book_name . "'";
+  $validation_result = mysqli_query($con, $validation_sql);
+  if (mysqli_num_rows($validation_result) > 0) {
+    echo"<script>alert('Book Already Exists!');</script>";
+  } else{
+    $sql = "INSERT INTO `books`(`book_name`, `author`, `book_category_id`, `copies`, `publishers`) VALUES ('$book_name','$author','$book_category_id','$copies','$publishers')";
+    $result = $con->query($sql);
+    echo"<script>alert('Book Added into system');</script>";
+  }
 }
 ?>
 </div>

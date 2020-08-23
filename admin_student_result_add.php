@@ -109,15 +109,15 @@ session_start();
     </div>
     <div class="form-group">
       	<label for="GPA">GPA</label>
-      	<input type="text" class="form-control"  name="GPA"  id="GPA" placeholder="4.0" required>
+      	<input type="number" class="form-control" name="GPA" onKeyPress="if(this.value > 4 || this.value > 4.0) return false;" id="GPA" placeholder="4.0" step="0.1" min="1.0" max="4.0" required>
     </div>
     <div class="form-group">
       	<label for="CGPA">CGPA</label>
-      	<input type="text" class="form-control"  name="CGPA"  id="CGPA" placeholder="4.0" required>
+      	<input type="number" class="form-control"  name="CGPA" onKeyPress="if(this.value > 4 || this.value > 4.0) return false;" id="CGPA" placeholder="4.0" step="0.1" min="1.0" max="4.0" required>
     </div>
     <div class="form-group">
       	<label for="PCGPA">PCGPA</label>
-      	<input type="text" class="form-control"  name="PCGPA"  id="PCGPA" placeholder="4.0" required>
+      	<input type="number" class="form-control"  name="PCGPA" onKeyPress="if(this.value > 4 || this.value > 4.0) return false;" id="PCGPA" placeholder="4.0" step="0.1" min="1.0" max="4.0" required>
     </div>
     <button type="submit" class="btn btn-primary" name="submit">Submit</button>
   </fieldset>
@@ -134,25 +134,46 @@ if (isset($_POST["submit"])) {
 	$CGPA =  $_POST["CGPA"];
 	$PCGPA =  $_POST["PCGPA"];
 
-	$validation_sql = "SELECT * FROM results WHERE student_id = '" . $student_id . "' AND semester = '" . $semester . "'";
-	$validation_result = mysqli_query($con, $validation_sql);
-	if(mysqli_num_rows($validation_result) > 0){
-		echo"<script>alert('Result of this semester Already Exists!');</script>";
-	}else{
-		
-	  	$sql = "INSERT INTO `results`( `student_id`, `session`, `program_id`, `semester`, `GPA`, `CGPA`, `PCGPA`) VALUES ('$student_id', '$session','$program_id','$semester','$GPA','$CGPA','$PCGPA')";
-	  	$result = $con->query($sql);
-  		echo"<script>alert('Result Added.');</script>";
+  if ($GPA > 4 || $GPA > 4.0) {
+    echo"<script>alert('Error, GPA can not be greater than 4.0');</script>";
+  } elseif ($CGPA > 4 || $CGPA > 4.0) {
+    echo"<script>alert('Error, CGPA can not be greater than 4.0');</script>";
+  } elseif ($PCGPA > 4 || $PCGPA > 4.0) {
+    echo"<script>alert('Error, PCGPA can not be greater than 4.0');</script>";
+  } else {
+    $validation_sql = "SELECT * FROM results WHERE student_id = '" . $student_id . "' AND semester = '" . $semester . "'";
+    $validation_result = mysqli_query($con, $validation_sql);
+    if(mysqli_num_rows($validation_result) > 0){
+      echo"<script>alert('Result of this semester Already Exists!');</script>";
+    }else{
+        if ($_POST["course_codes"]) {
 
-  		if ($_POST["course_codes"]) {
-  			$courses = explode(", ",$_POST["course_codes"]);
-  			foreach ($courses as $value) {
-  				$sql = "INSERT INTO `failed_courses`( `student_id`, `semester`, `course_code`) VALUES ('$student_id', '$semester','$value')";
-  				$result = $con->query($sql);
-  			}
-  		}
-  		
-	}
+          $courses = explode(", ",$_POST["course_codes"]);
+          if (count($courses) != count(array_unique($courses))) {
+            echo "<script>alert('Error, You have entered same failed course more than 1 time');</script>";
+          } else {
+            $sql = "INSERT INTO `results`( `student_id`, `session`, `program_id`, `semester`, `GPA`, `CGPA`, `PCGPA`) VALUES ('$student_id', '$session','$program_id','$semester','$GPA','$CGPA','$PCGPA')";
+            $result = $con->query($sql);
+
+            $last_id = $con->insert_id;
+
+            foreach ($courses as $value) {
+              $sql = "INSERT INTO `failed_courses`( `student_id`, `result_id`, `semester`, `course_code`) VALUES ('$student_id', '$last_id', '$semester','$value')";
+              $result = $con->query($sql);
+            echo"<script>alert('Result Added.');</script>";
+            }
+          }          
+        }
+        else{
+          $sql = "INSERT INTO `results`( `student_id`, `session`, `program_id`, `semester`, `GPA`, `CGPA`, `PCGPA`) VALUES ('$student_id', '$session','$program_id','$semester','$GPA','$CGPA','$PCGPA')";
+          $result = $con->query($sql);
+
+          $last_id = $con->insert_id;
+          echo"<script>alert('Result Added.');</script>";
+        }
+        
+    }
+  }
 }
 ?>
 </div>

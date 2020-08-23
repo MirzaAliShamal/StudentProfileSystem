@@ -82,11 +82,19 @@ if (isset($_POST["submit"])) {
 	
 	$username =  $_POST["username"];
 	$password =  base64_encode($_POST["password"]);
-	$role =  $_POST["role"];	
-  $sql = "insert into `users` (username, password, role) value ('$username','$password','$role')";
-	if($result = mysqli_query($con, $sql)){
-	echo"<script>alert('User Added');</script>";
-  }
+	$role =  $_POST["role"];
+
+	$validation_sql = "SELECT * FROM users WHERE username = '" . $username . "'";
+	$validation_result = mysqli_query($con, $validation_sql);
+	if (mysqli_num_rows($validation_result) > 0) {
+		echo"<script>alert('Sorry, Username must be unique! User already registerd with this username');</script>";
+	} else{
+	    $sql = "insert into `users` (username, password, role) value ('$username','$password','$role')";
+		if($result = mysqli_query($con, $sql)){
+			echo"<script>alert('User Added');</script>";
+		}	
+  	
+  	}
 }
 ?>
 			</div>

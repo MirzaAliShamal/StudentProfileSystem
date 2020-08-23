@@ -139,17 +139,51 @@ $rowcount=mysqli_num_rows($result);
               ?>
             </select>
           </div>
+          <div class="form-group">
+            <img src="images/<?php echo $row['profile_img']; ?>" class="img-fluid" width="100"><br>
+            <label for="profile_img">Profile Picture</label><br>
+            <input type="file" name="profile_img" id="profile_img" class="form-control">
+          </div>
           <button type="submit" class="btn btn-primary" name="submit">Submit</button>
         </fieldset>
       </form>
 
 <?php 
 if (isset($_POST["submit"])) {
+
+  if ($_FILES["profile_img"]["size"]>0) {
+      $filePath = "images/" . $row['profile_img'];
+
+      $filename   = uniqid() ."-". $_POST['rollno'] . "-" .str_replace(' ', '-', $_POST['name']) . "-profile_img";
+      $extension  = pathinfo( $_FILES["profile_img"]["name"], PATHINFO_EXTENSION );
+      $basename   = $filename . '.' . $extension;
+      $source     = $_FILES["profile_img"]["tmp_name"];
+      $destination= "images/" . $basename;
+      if(move_uploaded_file( $source, $destination )){
+
+        if (file_exists($filePath)) {
+          unlink($filePath);
+          
+        } else {
+          echo "File does not exists"; 
+        }
+
+        mysqli_query($con,"UPDATE students set name='" . $_POST['name'] . "', father_name='" . $_POST['father_name'] . "', rollno='" . $_POST['rollno'] . "', cnic='" . $_POST['cnic'] . "' ,dob='" . $_POST['dob'] . "',address='" . $_POST['address'] . "',contact_number='" . $_POST['contact_number'] . "',email='" . $_POST['email'] . "', gender='" . $_POST['gender'] . "', session='" . $_POST['session'] . "', program_id='" . $_POST['program_id'] . "', profile_img='" . $basename . "' WHERE id='" . $_GET['id'] . "'");
+        echo"<script>alert('Record Updated.!')
+          location.replace('admin_student_list.php')
+        </script>";
+      }else{
+        $msg = "Failed to upload image";
+      }
+  } else {
+    mysqli_query($con,"UPDATE students set name='" . $_POST['name'] . "', father_name='" . $_POST['father_name'] . "', rollno='" . $_POST['rollno'] . "', cnic='" . $_POST['cnic'] . "' ,dob='" . $_POST['dob'] . "',address='" . $_POST['address'] . "',contact_number='" . $_POST['contact_number'] . "',email='" . $_POST['email'] . "', gender='" . $_POST['gender'] . "', session='" . $_POST['session'] . "', program_id='" . $_POST['program_id'] . "' WHERE id='" . $_GET['id'] . "'");
+      echo"<script>alert('Record Updated.!')
+        location.replace('admin_student_list.php')
+      </script>";
+  }
+  
 	
-  mysqli_query($con,"UPDATE students set name='" . $_POST['name'] . "', father_name='" . $_POST['father_name'] . "', rollno='" . $_POST['rollno'] . "', cnic='" . $_POST['cnic'] . "' ,dob='" . $_POST['dob'] . "',address='" . $_POST['address'] . "',contact_number='" . $_POST['contact_number'] . "',email='" . $_POST['email'] . "', gender='" . $_POST['gender'] . "', session='" . $_POST['session'] . "', program_id='" . $_POST['program_id'] . "' WHERE id='" . $_GET['id'] . "'");
-echo"<script>alert('Record Updated.!')
-  location.replace('admin_student_list.php')
-</script>";
+  
 }
 ?>
 </div>

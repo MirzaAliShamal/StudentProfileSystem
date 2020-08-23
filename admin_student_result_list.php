@@ -59,6 +59,7 @@ if($result = mysqli_query($con, $sql)){
             echo "<th>GPA</th>";
             echo "<th>CGPA</th>";
             echo "<th>PCGPA</th>";
+            echo "<th>Failed Subjects</th>";
             echo "<th>Action</th>";
           echo "</tr></thead>";
         while($row = mysqli_fetch_array($result)){
@@ -70,7 +71,21 @@ if($result = mysqli_query($con, $sql)){
             echo "<td>" . $row['GPA'] . "</td>";
             echo "<td>" . $row['CGPA'] . "</td>";
             echo "<td>" . $row['PCGPA'] . "</td>";
-            echo "<td><a class='confirmation' href='admin_student_result_delete.php?id=".$row['id']."'><i class='icofont-trash'></i></a></td>";
+            echo "<td>";
+            $fail_res = mysqli_query($con,"SELECT * FROM failed_courses WHERE result_id='" . $row['id'] . "'");
+            $f_rowcount=mysqli_num_rows($fail_res);
+            if ($f_rowcount > 0) {
+                echo "<ul>";
+                while($f_row = mysqli_fetch_array($fail_res)){
+                    echo "<li>" . $f_row['course_code'] . "</li>";
+                }
+                echo "</ul>";
+            } else {
+                echo "No Failed Course";
+            }
+            
+            echo "</td>";
+            echo "<td><a href='admin_student_result_edit.php?id=".$row['id']."'><i class='icofont-edit'></i></a> <a class='confirmation' href='admin_student_result_delete.php?id=".$row['id']."'><i class='icofont-trash'></i></a></td>";
           echo "</tr></tbody>";
         }
         echo "</table>";

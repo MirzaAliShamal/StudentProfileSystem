@@ -57,6 +57,7 @@ if($result = mysqli_query($con, $sql)){
             echo "<th>Scholarship</th>";
             echo "<th>Amount</th>";
             echo "<th>Session</th>";
+            echo "<th>Semester</th>";
             echo "<th>Action</th>";
           echo "</tr></thead>";
         while($row = mysqli_fetch_array($result)){
@@ -66,6 +67,7 @@ if($result = mysqli_query($con, $sql)){
             echo "<td>" . $row['name'] . "</td>";
             echo "<td>" . $row['amount'] . "</td>";
             echo "<td>" . $row['session'] . "</td>";
+            echo "<td>" . $row['semester'] . "</td>";
             echo "<td><a href='admin_student_scholarship_view.php?id=".$row['id']."'><i class='icofont-eye'></i></a> <a href='admin_student_scholarship_edit.php?id=".$row['id']."'><i class='icofont-edit'></i></a> <a class='confirmation' href='admin_student_scholarship_delete.php?id=".$row['id']."'><i class='icofont-trash'></i></a></td>";
           echo "</tr></tbody>";
         }

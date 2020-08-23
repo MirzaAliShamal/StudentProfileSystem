@@ -58,9 +58,16 @@ session_start();
 if (isset($_POST["submit"])) {
 	
 	$name =  $_POST["name"];
-  $sql = "INSERT INTO `scholarships`( `name`) VALUES ('$name')";
-  $result = $con->query($sql);
-  echo"<script>alert('Scholarship Added into system');</script>";
+
+  $validation_sql = "SELECT * FROM scholarships WHERE name = '" . $name . "'";
+  $validation_result = mysqli_query($con, $validation_sql);
+  if (mysqli_num_rows($validation_result) > 0) {
+    echo"<script>alert('Scholarship Already Exists with this name!');</script>";
+  } else{
+    $sql = "INSERT INTO `scholarships`( `name`) VALUES ('$name')";
+    $result = $con->query($sql);
+    echo"<script>alert('Scholarship Added into system');</script>";
+  }
 }
 ?>
 </div>

@@ -58,9 +58,16 @@ session_start();
 if (isset($_POST["submit"])) {
 	
 	$category =  $_POST["category"];
-  $sql = "INSERT INTO `book_categories`( `category`) VALUES ('$category')";
-  $result = $con->query($sql);
-  echo"<script>alert('Book Category Added into system');</script>";
+
+  $validation_sql = "SELECT * FROM book_categories WHERE category = '" . $category . "'";
+  $validation_result = mysqli_query($con, $validation_sql);
+  if (mysqli_num_rows($validation_result) > 0) {
+    echo"<script>alert('Book Category Already Exists!');</script>";
+  } else {
+    $sql = "INSERT INTO `book_categories`( `category`) VALUES ('$category')";
+    $result = $con->query($sql);
+    echo"<script>alert('Book Category Added into system');</script>";
+  }
 }
 ?>
 </div>

@@ -68,7 +68,7 @@ if($result = mysqli_query($con, $sql)){
             echo "<td>" . $row['amount'] . "</td>";
             echo "<td>" . $row['session'] . "</td>";
             echo "<td>" . $row['semester'] . "</td>";
-            echo "<td><a class='confirmation' href='admin_voucher_delete.php?id=".$row['id']."'><i class='icofont-trash'></i></a></td>";
+            echo "<td><a href='admin_voucher_edit.php?id=".$row['id']."'><i class='icofont-edit'></i></a> <a class='confirmation' href='admin_voucher_delete.php?id=".$row['id']."'><i class='icofont-trash'></i></a></td>";
           echo "</tr></tbody>";
         }
         echo "</table>";

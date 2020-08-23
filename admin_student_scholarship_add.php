@@ -145,26 +145,33 @@ if (isset($_POST["submit"])) {
 	$program_id =  $_POST["program_id"];
   $semester =  $_POST["semester"];
 
-  $result = mysqli_query($con,"SELECT * FROM students WHERE id='" . $student_id . "'");
-  $student_data= mysqli_fetch_array($result);
+  $scholar_val_sql = "SELECT * FROM student_scholarships WHERE student_id = '$student_id' AND semester = '$semester'";
+  $scholar_val_result = $con->query($scholar_val_sql);
+  $scholarcount = mysqli_num_rows($scholar_val_result);
+  if ($scholarcount > 0) {
+    echo"<script>alert('Sorry, Student can not hold same scholarship more than 1 times in a semester!');</script>";
+  } else {
+    $result = mysqli_query($con,"SELECT * FROM students WHERE id='" . $student_id . "'");
+    $student_data= mysqli_fetch_array($result);
 
-  $result_s = mysqli_query($con,"SELECT * FROM scholarships WHERE id='" . $scholarship_id . "'");
-  $scholarship_data= mysqli_fetch_array($result_s);
+    $result_s = mysqli_query($con,"SELECT * FROM scholarships WHERE id='" . $scholarship_id . "'");
+    $scholarship_data= mysqli_fetch_array($result_s);
 
-  $filename   = uniqid() ."-". $student_data['rollno'] . "-" .str_replace(' ', '-', $student_data['name']) . "-" .str_replace(' ', '-', $scholarship_data['name']) . "-scholarship_img";
-  $extension  = pathinfo( $_FILES["scholarship_img"]["name"], PATHINFO_EXTENSION );
-  $basename   = $filename . '.' . $extension;
-  $source     = $_FILES["scholarship_img"]["tmp_name"];
-  $destination= "images/scholarships/" . $basename;
-	if(move_uploaded_file( $source, $destination )){
-  	$msg = "Image uploaded successfully";
-  }else{
-		$msg = "Failed to upload image";
-  }
-	
-  $sql = "INSERT INTO `student_scholarships`( `student_id`, `scholarship_id`, `amount`, `nature`, `session`, `program_id`, `semester`, `scholarship_img`) VALUES ('$student_id','$scholarship_id','$amount','$nature','$session','$program_id','$semester', '$basename')";
-  $result = $con->query($sql);
-  echo"<script>alert('Student Scholorship Added into system');</script>";
+    $filename   = uniqid() ."-". $student_data['rollno'] . "-" .str_replace(' ', '-', $student_data['name']) . "-" .str_replace(' ', '-', $scholarship_data['name']) . "-scholarship_img";
+    $extension  = pathinfo( $_FILES["scholarship_img"]["name"], PATHINFO_EXTENSION );
+    $basename   = $filename . '.' . $extension;
+    $source     = $_FILES["scholarship_img"]["tmp_name"];
+    $destination= "images/scholarships/" . $basename;
+    if(move_uploaded_file( $source, $destination )){
+      $msg = "Image uploaded successfully";
+    }else{
+      $msg = "Failed to upload image";
+    }
+    
+    $sql = "INSERT INTO `student_scholarships`( `student_id`, `scholarship_id`, `amount`, `nature`, `session`, `program_id`, `semester`, `scholarship_img`) VALUES ('$student_id','$scholarship_id','$amount','$nature','$session','$program_id','$semester', '$basename')";
+    $result = $con->query($sql);
+    echo"<script>alert('Student Scholorship Added into system');</script>";
+  } 
 }
 ?>
 </div>
