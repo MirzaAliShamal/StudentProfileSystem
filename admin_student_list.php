@@ -50,29 +50,38 @@ session_start();
     $sql ="SELECT students.*,programs.program from students join programs on programs.id=students.program_id";
 if($result = mysqli_query($con, $sql)){
     if(mysqli_num_rows($result) > 0){
-        echo "<table id='students' class='col-12 table table-bordered text-center table-hover'>";
-          echo "<thead><tr>";
-            echo "<th>Rollno</th>";
-            echo "<th>Image</th>";
-            echo "<th>Name</th>";
-            echo "<th>Father Name</th>";
-            echo "<th>Session</th>";
-            echo "<th>Program</th>";
-            echo "<th>Action</th>";
-          echo "</tr></thead>";
-        while($row = mysqli_fetch_array($result)){
-          echo "<tbody><tr>";
-            echo "<td><img src='images/" . $row['profile_img'] . "' class='img-fluid rounded-circle' width='50'></td>";
-            echo "<td style='vertical-align:middle;'>" . $row['rollno'] . "</td>";
-            echo "<td style='vertical-align:middle;'>" . $row['name'] . "</td>";
-            echo "<td style='vertical-align:middle;'>" . $row['father_name'] . "</td>";
-            echo "<td style='vertical-align:middle;'>" . $row['session'] . "</td>";
-            echo "<td style='vertical-align:middle;'>" . $row['program'] . "</td>";
-            echo "<td style='vertical-align:middle;'><a href='admin_student_profile.php?id=".$row['id']."'><i class='icofont-eye'></i></a> <a href='admin_student_edit.php?id=".$row['id']."'><i class='icofont-edit'></i></a> <a class='confirmation' href='admin_student_delete.php?id=".$row['id']."'><i class='icofont-trash'></i></a></td>";
-          echo "</tr></tbody>";
-        }
-        echo "</table>";
-        mysqli_free_result($result);
+        ?>
+        <table id="students" class='col-12 table table-bordered text-center table-hover'>";
+            <thead>
+                <tr>
+                    <th>Rollno</th>
+                    <th>Image</th>
+                    <th>Name</th>"
+                    <th>Father Name</th>
+                    <th>Session</th>
+                    <th>Program</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while($row = mysqli_fetch_array($result)){ ?>
+                <tr>
+                    <td><img src="images/<?php echo $row['profile_img']; ?>" class='img-fluid rounded-circle' width='50'></td>
+                    <td style='vertical-align:middle;'><?php echo $row['rollno']; ?></td>
+                    <td style='vertical-align:middle;'><?php echo $row['name']; ?></td>
+                    <td style='vertical-align:middle;'><?php echo $row['father_name']; ?></td>
+                    <td style='vertical-align:middle;'><?php echo $row['session']; ?></td>
+                    <td style='vertical-align:middle;'><?php echo $row['program']; ?></td>
+                    <td style='vertical-align:middle;'>
+                        <a href="admin_student_profile.php?id=<?php echo $row['id']; ?>"><i class="icofont-eye"></i></a>
+                        <a href="admin_student_edit.php?id=<?php echo $row['id']; ?>"><i class='icofont-edit'></i></a>
+                        <a class='confirmation' href="admin_student_delete.php?id=<?php echo $row['id']; ?>"><i class='icofont-trash'></i></a>
+                    </td>
+                </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    <?php 
     } else{
         echo "<div class='text-center alert bg-dark text-white'>No Programs Found</div>";
   }}

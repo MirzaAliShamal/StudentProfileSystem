@@ -1,9 +1,9 @@
 <?php
 session_start();
-	if ($_SESSION['user'] != 'Admin'){
-		header('location:index.php');
+  if ($_SESSION['user'] != 'Clerk'){
+    header('location:index.php');
 
-	}
+  }
 ?> 
 <!DOCTYPE html>
 <html>
@@ -13,18 +13,18 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Student Registration Section</title>
-	<?php 
-	include"system/fileslink.php";
-	?>
+    <title>Dashboard: Clerk</title>
+  <?php 
+  include"system/fileslink.php";
+  ?>
 </head>
 
 <body style="background-image: url('assets/img/logo.png'); background-attachment: fixed;">
     <div class="wrapper">
         <!-- Sidebar  -->
         <?php 
-			include"navs/admin_nav.php";
-		?>
+      include"navs/clerk_nav.php";
+    ?>
 
         <!-- Page Content  -->
         <div id="content">
@@ -49,7 +49,7 @@ $row= mysqli_fetch_array($result);
 $rowcount=mysqli_num_rows($result);
   if($rowcount == 0){
     echo"<script>alert('No Record Found.!')
-  location.replace('admin_student_list.php')
+  location.replace('clerk_student_list.php')
 </script>";
   }
 ?>
@@ -183,7 +183,7 @@ if (isset($_POST["submit"])) {
 
 	        mysqli_query($con,"UPDATE students set name='" . $_POST['name'] . "', father_name='" . $_POST['father_name'] . "', rollno='" . $_POST['rollno'] . "', cnic='" . $_POST['cnic'] . "' ,dob='" . $_POST['dob'] . "',address='" . $_POST['address'] . "',contact_number='" . $_POST['contact_number'] . "',email='" . $_POST['email'] . "', gender='" . $_POST['gender'] . "', session='" . $_POST['session'] . "', program_id='" . $_POST['program_id'] . "', profile_img='" . $basename . "' WHERE id='" . $_GET['id'] . "'");
 	        echo"<script>alert('Record Updated.!')
-	          location.replace('admin_student_list.php')
+	          location.replace('clerk_student_list.php')
 	        </script>";
 	      }else{
 	        $msg = "Failed to upload image";
@@ -192,7 +192,7 @@ if (isset($_POST["submit"])) {
 		  else {
 		    mysqli_query($con,"UPDATE students set name='" . $_POST['name'] . "', father_name='" . $_POST['father_name'] . "', rollno='" . $_POST['rollno'] . "', cnic='" . $_POST['cnic'] . "' ,dob='" . $_POST['dob'] . "',address='" . $_POST['address'] . "',contact_number='" . $_POST['contact_number'] . "',email='" . $_POST['email'] . "', gender='" . $_POST['gender'] . "', session='" . $_POST['session'] . "', program_id='" . $_POST['program_id'] . "' WHERE id='" . $_GET['id'] . "'");
 		      echo"<script>alert('Record Updated.!')
-		        location.replace('admin_student_list.php')
+		        location.replace('clerk_student_list.php')
 		      </script>";
 		  }
 

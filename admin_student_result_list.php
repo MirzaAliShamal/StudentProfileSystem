@@ -49,50 +49,56 @@ session_start();
   <?php
     $sql ="SELECT results.*,programs.program,students.rollno FROM results INNER JOIN programs ON programs.id=results.program_id INNER JOIN students ON students.id = results.student_id";
 if($result = mysqli_query($con, $sql)){
-    if(mysqli_num_rows($result) > 0){
-        echo "<table id='results' class='col-12 table table-bordered text-center table-hover'>";
-          echo "<thead><tr>";
-            echo "<th>Id</th>";
-            echo "<th>Roll No</th>";
-            echo "<th>Session</th>";
-            echo "<th>Semester</th>";
-            echo "<th>GPA</th>";
-            echo "<th>CGPA</th>";
-            echo "<th>PCGPA</th>";
-            echo "<th>Failed Subjects</th>";
-            echo "<th>Action</th>";
-          echo "</tr></thead>";
-        while($row = mysqli_fetch_array($result)){
-          echo "<tbody><tr>";
-            echo "<td>" . $row['id'] . "</td>";
-            echo "<td>" . $row['rollno'] . "</td>";
-            echo "<td>" . $row['session'] . "</td>";
-            echo "<td>" . $row['semester'] . "</td>";
-            echo "<td>" . $row['GPA'] . "</td>";
-            echo "<td>" . $row['CGPA'] . "</td>";
-            echo "<td>" . $row['PCGPA'] . "</td>";
-            echo "<td>";
-            $fail_res = mysqli_query($con,"SELECT * FROM failed_courses WHERE result_id='" . $row['id'] . "'");
-            $f_rowcount=mysqli_num_rows($fail_res);
-            if ($f_rowcount > 0) {
-                echo "<ul>";
-                while($f_row = mysqli_fetch_array($fail_res)){
-                    echo "<li>" . $f_row['course_code'] . "</li>";
-                }
-                echo "</ul>";
-            } else {
-                echo "No Failed Course";
-            }
-            
-            echo "</td>";
-            echo "<td><a href='admin_student_result_edit.php?id=".$row['id']."'><i class='icofont-edit'></i></a> <a class='confirmation' href='admin_student_result_delete.php?id=".$row['id']."'><i class='icofont-trash'></i></a></td>";
-          echo "</tr></tbody>";
-        }
-        echo "</table>";
-        mysqli_free_result($result);
-    } else{
+    if(mysqli_num_rows($result) > 0){ ?>
+        <table id="results" class='col-12 table table-bordered text-center table-hover'>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Roll No</th>
+                    <th>Session</th>
+                    <th>Semester</th>
+                    <th>GPA</th>
+                    <th>CGPA</th>
+                    <th>PCGPA</th>
+                    <th>Failed Subjects</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while($row = mysqli_fetch_array($result)){ ?>
+                    <tr>
+                        <td><?php echo $row['id']; ?></td>
+                        <td><?php echo $row['rollno']; ?></td>
+                        <td><?php echo $row['session']; ?></td>
+                        <td><?php echo $row['semester']; ?></td>
+                        <td><?php echo $row['GPA']; ?></td>
+                        <td><?php echo $row['CGPA']; ?></td>
+                        <td><?php echo $row['PCGPA']; ?></td>
+                        <td>
+                            <?php $fail_res = mysqli_query($con,"SELECT * FROM failed_courses WHERE result_id='" . $row['id'] . "'"); ?>
+                            <?php $f_rowcount=mysqli_num_rows($fail_res); ?>
+                            <?php if ($f_rowcount > 0) { ?>
+                                <ul>
+                                    <?php while($f_row = mysqli_fetch_array($fail_res)){ ?>
+                                    <li><?php echo $f_row['course_code']; ?></li>
+                                    <?php } ?>
+                                </ul>
+                            <?php } else { ?>
+                                No Failed Course
+                            <?php } ?>
+                        </td>
+                        <td>
+                            <a href="admin_student_result_edit.php?id=<?php echo $row['id'] ?>"><i class='icofont-edit'></i></a> 
+                            <a class='confirmation' href="admin_student_result_delete.php?id=<?php echo $row['id']; ?>"><i class='icofont-trash'></i></a>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    <?php    }
+     } else{
         echo "<div class='text-center alert bg-dark text-white'>No Vouchers Found</div>";
-  }}
+  }
     ?>
 <script type="text/javascript">
     $('.confirmation').on('click', function () {

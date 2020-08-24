@@ -29,7 +29,7 @@ session_start();
         <!-- Page Content  -->
         <div id="content">
 
-            <nav class="navbar navbar-expand-lg col-12 navbar-light bg-dark text-white rounded">
+            <nav class="navbar navbar-expand-lg navbar-light bg-dark text-white rounded">
                 <div class="container-fluid">
 
                     <button type="button" id="sidebarCollapse" class="btn btn-info">
@@ -38,38 +38,39 @@ session_start();
                     </button>
 					
 					<h3 class="ml-5">Student Profile System</h3>
+
                 </div>
             </nav>
-
-<div class="row">
+	<div class="row">
 	<div class="col-1"></div>
 	<div class="col-md-12 col-lg-10">			
 	<p class="card-text">
-	<h3 class="text-center">Student Profile</h3>
+	<h3 class="text-center">Student Scholarship View</h3>
 	<?php
 
 	$id = $_GET['id'];
 	
-		$sql ="SELECT students.*,programs.program FROM students INNER JOIN programs ON programs.id=students.program_id WHERE students.id='$id'";
+		$sql ="SELECT student_scholarships.*,scholarships.name,students.rollno,programs.program FROM student_scholarships INNER JOIN scholarships ON scholarships.id=student_scholarships.scholarship_id INNER JOIN students ON students.id = student_scholarships.student_id INNER JOIN programs ON programs.id = student_scholarships.program_id where student_scholarships.id='" . $id . "'";
 if($result = mysqli_query($con, $sql)){
     if(mysqli_num_rows($result) > 0){
         echo "<table class='table table-dark text-center'>";
         while($row = mysqli_fetch_array($result)){
 			
 			echo "<tr style='border: 1px solid black'>";
-                echo "<td class='text-center'  colspan='2'><img id='profilepic' class='img-fluid' src='images/".$row['profile_img']."' ></td>";
+                echo "<td class='text-center'  colspan='2'><img id='profilepic' class='img-fluid' src='images/scholarships/".$row['scholarship_img']."' ></td>";
+			echo "</tr>";
+			
+			echo "<tr style='border: 1px solid black'>";
+                echo "<td class='text-right'>Roll Number:</td><td class='text-left'>" . $row['rollno'] . "</td>";
 			echo "</tr>";
 			echo "<tr style='border: 1px solid black'>";
-                echo "<td class='text-right'>Roll no:</td><td class='text-left'>" . $row['rollno'] . "</td>";
+                echo "<td class='text-right'>Scholarship:</td><td class='text-left'>" . $row['name'] . "</td>";
 			echo "</tr>";
             echo "<tr style='border: 1px solid black'>";
-                echo "<td class='text-right'>Student Name:</td><td class='text-left'>" . $row['name'] . "</td>";
+                echo "<td class='text-right'>Amount:</td><td class='text-left'>" . $row['amount'] . "</td>";
 			echo "</tr>";
-			echo "<tr style='border: 1px solid black'>";
-                echo "<td class='text-right'>Father Name:</td><td class='text-left'>" . $row['father_name'] . "</td>";
-			echo "</tr>";
-			echo "<tr style='border: 1px solid black'>";
-				echo "<td class='text-right'>CNIC:</td><td class='text-left'>" . $row['cnic'] . "</td>";
+            echo "<tr style='border: 1px solid black'>";
+                echo "<td class='text-right'>Nature:</td><td class='text-left'>" . $row['nature'] . "</td>";
 			echo "</tr>";
 			echo "<tr style='border: 1px solid black'>";
 				echo "<td class='text-right'>Session:</td><td class='text-left'>" . $row['session'] . "</td>";
@@ -78,19 +79,7 @@ if($result = mysqli_query($con, $sql)){
 				echo "<td class='text-right'>Program:</td><td class='text-left'>" . $row['program'] . "</td>";
 			echo "</tr>";
 			echo "<tr style='border: 1px solid black'>";
-				echo "<td class='text-right'>Date of Birth:</td><td class='text-left'>" . $row['dob'] . "</td>";
-			echo "</tr>";
-			echo "<tr style='border: 1px solid black'>";
-				echo "<td class='text-right'>Contact:</td><td class='text-left'>" . $row['contact_number'] . "</td>";
-			echo "</tr>";
-			echo "<tr style='border: 1px solid black'>";
-				echo "<td class='text-right'>Address:</td><td class='text-left'>" . $row['address'] . "</td>";
-			echo "</tr>";
-			echo "<tr style='border: 1px solid black'>";
-				echo "<td class='text-right'>E Mail:</td><td class='text-left'>" . $row['email'] . "</td>";
-			echo "</tr>";
-			echo "<tr style='border: 1px solid black'>";
-				echo "<td class='text-right'>Gender:</td><td class='text-left'>" . $row['gender'] . "</td>";
+                echo "<td class='text-right'>Semester:</td><td class='text-left'>" . $row['semester'] . "</td>";
 			echo "</tr>";
 			
         }
@@ -103,8 +92,8 @@ if($result = mysqli_query($con, $sql)){
 
 			</div>
 			</div>
+	</div> 
         </div>
-    </div>
 	
 <script type="text/javascript">
         $(document).ready(function () {

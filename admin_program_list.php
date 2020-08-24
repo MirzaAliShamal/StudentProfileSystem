@@ -49,23 +49,27 @@ session_start();
   <?php
     $sql ="SELECT * FROM programs";
 if($result = mysqli_query($con, $sql)){
-    if(mysqli_num_rows($result) > 0){
-        echo "<table id='programs' class='col-12 table table-bordered text-center table-hover'>";
-          echo "<thead><tr>";
-            echo "<th>Id</th>";
-            echo "<th>Progam</th>";
-            echo "<th>Action</th>";
-          echo "</tr></thead>";
-        while($row = mysqli_fetch_array($result)){
-          echo "<tbody><tr>";
-            echo "<td>" . $row['id'] . "</td>";
-            echo "<td>" . $row['program'] . "</td>";
-            echo "<td><a href='admin_program_edit.php?id=".$row['id']."'><i class='icofont-edit'></i></a> <a class='confirmation' href='admin_program_delete.php?id=".$row['id']."'><i class='icofont-trash'></i></a></td>";
-          echo "</tr></tbody>";
-        }
-        echo "</table>";
-        mysqli_free_result($result);
-    } else{
+    if(mysqli_num_rows($result) > 0){ ?>
+      <table id='programs' class='col-12 table table-bordered text-center table-hover'>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Progam</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php while($row = mysqli_fetch_array($result)){ ?>
+            <tr>
+              <td><?php echo $row['id']; ?></td>
+              <td><?php echo $row['program']; ?></td>
+              <td>
+                <a href="admin_program_edit.php?id=<?php echo $row['id']; ?>"><i class='icofont-edit'></i></a>
+                <a class='confirmation' href="admin_program_delete.php?id=<?php echo $row['id']; ?>"><i class='icofont-trash'></i></a>
+              </td>
+            </tr>
+          <?php } ?>
+    <?php } else{
         echo "<div class='text-center alert bg-dark text-white'>No Programs Found</div>";
   }}
     ?>

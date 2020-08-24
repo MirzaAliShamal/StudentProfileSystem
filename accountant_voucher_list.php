@@ -1,6 +1,6 @@
 <?php
 session_start();
-	if ($_SESSION['user'] != 'Admin'){
+	if ($_SESSION['user'] != 'Accountant'){
 		header('location:index.php');
 
 	}
@@ -13,7 +13,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Student Registration Section</title>
+    <title>Dashboard: Accounts Section</title>
 	<?php 
 	include"system/fileslink.php";
 	?>
@@ -23,7 +23,7 @@ session_start();
     <div class="wrapper">
         <!-- Sidebar  -->
         <?php 
-      include"navs/admin_nav.php";
+      include"navs/accounts_nav.php";
     ?>
 
         <!-- Page Content  -->
@@ -74,8 +74,8 @@ if($result = mysqli_query($con, $sql)){
                         <td><?php echo $row['semester']; ?></td>
                         <td><?php echo $row['issue_date']; ?></td>
                         <td>
-                            <a href="admin_voucher_edit.php?id=<?php echo $row['id']; ?>"><i class='icofont-edit'></i></a>
-                            <a class='confirmation' href="admin_voucher_delete.php?id=<?php echo $row['id']; ?>"><i class='icofont-trash'></i></a>
+                            <a href="accountant_voucher_edit.php?id=<?php echo $row['id']; ?>"><i class='icofont-edit'></i></a>
+                            <a class='confirmation' href="accountant_voucher_delete.php?id=<?php echo $row['id']; ?>"><i class='icofont-trash'></i></a>
                         </td>
                     </tr>
                 <?php } ?>

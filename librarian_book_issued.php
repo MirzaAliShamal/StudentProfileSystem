@@ -1,6 +1,6 @@
 <?php
 session_start();
-	if ($_SESSION['user'] != 'Admin'){
+	if ($_SESSION['user'] != 'Librarian'){
 		header('location:index.php');
 
 	}
@@ -14,17 +14,17 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Student Registration Section</title>
-	<?php 
-	include"system/fileslink.php";
-	?>
+    <title>Dashboard: Library</title>
+  <?php 
+  include"system/fileslink.php";
+  ?>
 </head>
 
 <body style="background-image: url('assets/img/logo.png'); background-attachment: fixed;">
     <div class="wrapper">
         <!-- Sidebar  -->
         <?php 
-      include"navs/admin_nav.php";
+      include"navs/librarian_nav.php";
     ?>
 
 <?php 
@@ -32,7 +32,7 @@ if (isset($_GET["id"])) {
     
   mysqli_query($con,"UPDATE books_issued set status ='received' WHERE id='" . $_GET['id'] . "'");
 echo"<script>alert('Record Updated.!')
-  location.replace('admin_book_issued.php')
+  location.replace('librarian_book_issued.php')
 </script>";
 }
 ?>
@@ -76,7 +76,7 @@ if($result = mysqli_query($con, $sql)){
             echo "<td>" . $row['rollno'] . "</td>";
             echo "<td><span class='badge badge-success'>" . $row['status'] . "</span></td>";
             echo "<td>" . $row['created_at'] . "</td>";
-            echo "<td><a class='btn btn-sm btn-danger' href='admin_book_issued.php?id=".$row['id']."'>Receive book</a></td>";
+            echo "<td><a class='btn btn-sm btn-danger' href='librarian_book_issued.php?id=".$row['id']."'>Receive book</a></td>";
           echo "</tr></tbody>";
         }
         echo "</table>";

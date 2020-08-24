@@ -13,22 +13,31 @@
 				<li>
                      <a href="librarian_dashboard.php">Dashboard</a>
                 </li>
-                <li class="active">
-                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Books Handling</a>
-                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                <li>
+                    <a href="#librarybook_categorysubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Book Category</a>
+                    <ul class="collapse list-unstyled" id="librarybook_categorysubmenu">
                         <li>
-                            <a href="librarian_issue_book.php">Issue Book</a>
+                            <a href="librarian_book_category_add.php">Book Category Add</a>
                         </li>
                         <li>
-                            <a href="librarian_recieve_book.php">Recieve a Book</a>
+                            <a href="librarian_book_category_list.php">Book Category List</a>
                         </li>
                     </ul>
                 </li>
-				<li>
-                     <a href="librarian_add_book.php">Add Book</a>
-                </li>
                 <li>
-                    <a href="librarian_add_category.php">Books Categories</a>
+                    <a href="#Book" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Book</a>
+                    <ul class="collapse list-unstyled" id="Book">
+                        <li>
+                            <a href="librarian_book_add.php">Book Add</a>
+                        </li>
+                        <li>
+                            <a href="librarian_book_list.php">Book List</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="librarian_book_issued.php">Issued Books</a>
                 </li>
 				<li class="nav-item bg-danger">
                     <a class="nav-link" href="logout.php">Logout</a>

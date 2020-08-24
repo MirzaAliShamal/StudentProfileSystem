@@ -1,9 +1,9 @@
 <?php
 session_start();
-	if ($_SESSION['user'] != 'Admin'){
-		header('location:index.php');
+  if ($_SESSION['user'] != 'Clerk'){
+    header('location:index.php');
 
-	}
+  }
 ?> 
 <!DOCTYPE html>
 <html>
@@ -13,18 +13,18 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Student Profile System</title>
-	<?php 
-	include"system/fileslink.php";
-	?>
+    <title>Dashboard: Clerk</title>
+  <?php 
+  include"system/fileslink.php";
+  ?>
 </head>
 
 <body style="background-image: url('assets/img/logo.png'); background-attachment: fixed;">
     <div class="wrapper">
         <!-- Sidebar  -->
         <?php 
-			include"navs/admin_nav.php";
-		?>
+      include"navs/clerk_nav.php";
+    ?>
 
         <!-- Page Content  -->
         <div id="content">

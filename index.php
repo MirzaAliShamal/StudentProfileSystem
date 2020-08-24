@@ -29,7 +29,7 @@
 							<option value="Admin">Admin</option>
 							<option value="Accountant">Accountant</option>
 							<option value="Librarian">Librarian</option>
-							<option value="User1">User1</option>
+							<option value="Clerk">Clerk</option>
 						</select>
 					</div>
 					<div class="form-group">
@@ -56,14 +56,14 @@
 	if ($role=='Accountant'){
 		session_start();
 		$_SESSION['user']= $role ;
-		header('location: accounts_dashboard.php');
+		header('location: accountant_dashboard.php');
 	}
 	if ($role=='Librarian'){
 		session_start();
 		$_SESSION['user']= $role ;
 		header('location: librarian_dashboard.php');
 	}
-	if ($role=='User1'){
+	if ($role=='Clerk'){
 		session_start();
 		$_SESSION['user']= $role ;
 		header('location: clerk_dashboard.php');

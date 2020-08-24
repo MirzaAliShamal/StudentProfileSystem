@@ -1,6 +1,6 @@
 <?php
 session_start();
-	if ($_SESSION['user'] != 'Admin'){
+	if ($_SESSION['user'] != 'Librarian'){
 		header('location:index.php');
 
 	}
@@ -13,18 +13,18 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Student Registration Section</title>
-	<?php 
-	include"system/fileslink.php";
-	?>
+    <title>Dashboard: Library</title>
+    <?php 
+    include"system/fileslink.php";
+    ?>
 </head>
 
 <body style="background-image: url('assets/img/logo.png'); background-attachment: fixed;">
     <div class="wrapper">
         <!-- Sidebar  -->
         <?php 
-      include"navs/admin_nav.php";
-    ?>
+            include"navs/librarian_nav.php";
+        ?>
 
         <!-- Page Content  -->
         <div id="content">
@@ -47,19 +47,18 @@ session_start();
   <div class="col-lg-12 col-md-12 bg-white">      
   <p class="card-text">
   <?php
-    $sql ="SELECT fee_voucher.*,programs.program,students.rollno FROM fee_voucher INNER JOIN programs ON programs.id=fee_voucher.program_id INNER JOIN students ON students.id = fee_voucher.student_id";
+    $sql ="SELECT books.*,book_categories.category from books join book_categories on book_categories.id=books.book_category_id";
 if($result = mysqli_query($con, $sql)){
     if(mysqli_num_rows($result) > 0){ ?>
-        <table id="fee_voucher" class="col-12 table table-bordered text-center table-hover">
+        <table id='book_name' class='col-12 table table-bordered text-center table-hover'>
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Voucher No</th>
-                    <th>Roll No</th>
-                    <th>Amount</th>
-                    <th>Session</th>
-                    <th>Semester</th>
-                    <th>Issue Date</th>
+                    <th>Book Name</th>
+                    <th>Author</th>
+                    <th>Category</th>
+                    <th>No of Copies</th>
+                    <th>Publishers</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -67,22 +66,22 @@ if($result = mysqli_query($con, $sql)){
                 <?php while($row = mysqli_fetch_array($result)){ ?>
                     <tr>
                         <td><?php echo $row['id']; ?></td>
-                        <td><?php echo $row['voucher_no']; ?></td>
-                        <td><?php echo $row['rollno']; ?></td>
-                        <td><?php echo $row['amount']; ?></td>
-                        <td><?php echo $row['session']; ?></td>
-                        <td><?php echo $row['semester']; ?></td>
-                        <td><?php echo $row['issue_date']; ?></td>
+                        <td><?php echo $row['book_name']; ?></td>
+                        <td><?php echo $row['author']; ?></td>
+                        <td><?php echo $row['category']; ?></td>
+                        <td><?php echo $row['copies']; ?></td>
+                        <td><?php echo $row['publishers']; ?></td>
                         <td>
-                            <a href="admin_voucher_edit.php?id=<?php echo $row['id']; ?>"><i class='icofont-edit'></i></a>
-                            <a class='confirmation' href="admin_voucher_delete.php?id=<?php echo $row['id']; ?>"><i class='icofont-trash'></i></a>
+                            <a class='badge badge-success' href="librarian_book_issue.php?id=<?php echo $row['id']; ?>">Issue book</a>
+                            <a href="librarian_book_edit.php?id=<?php echo $row['id']; ?>"><i class='icofont-edit'></i></a>
+                            <a class='confirmation' href="librarian_book_delete.php?id=<?php echo $row['id']; ?>"><i class='icofont-trash'></i></a>
                         </td>
                     </tr>
                 <?php } ?>
             </tbody>
         </table>
     <?php } else{
-        echo "<div class='text-center alert bg-dark text-white'>No Vouchers Found</div>";
+        echo "<div class='text-center alert bg-dark text-white'>No Books Found</div>";
   }}
     ?>
 <script type="text/javascript">
@@ -92,7 +91,7 @@ if($result = mysqli_query($con, $sql)){
 </script>
 <script>
 $(document).ready(function() {
-    $('#fee_voucher').DataTable();
+    $('#book_name').DataTable();
 } );
 </script>
     </p>

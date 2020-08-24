@@ -6,7 +6,7 @@ $id = $_GET['id'];
 $sql = "Delete from books WHERE id = '$id'";
 if($result = mysqli_query($con, $sql)){
     if($result > 0){
-		
-	header('Location: librarian_dashboard.php');}}
-$conn->close();
+	echo"<script>alert('Book Deleted Successfully');</script>";
+	header('Location: librarian_book_list.php');}}
+$con->close();
 ?>

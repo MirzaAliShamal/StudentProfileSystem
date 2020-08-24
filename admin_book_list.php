@@ -49,31 +49,38 @@ session_start();
   <?php
     $sql ="SELECT books.*,book_categories.category from books join book_categories on book_categories.id=books.book_category_id";
 if($result = mysqli_query($con, $sql)){
-    if(mysqli_num_rows($result) > 0){
-        echo "<table id='book_name' class='col-12 table table-bordered text-center table-hover'>";
-          echo "<thead><tr>";
-            echo "<th>Id</th>";
-            echo "<th>Book Name</th>";
-            echo "<th>Author</th>";
-            echo "<th>Category</th>";
-            echo "<th>No of Copies</th>";
-            echo "<th>Publishers</th>";
-            echo "<th>Action</th>";
-          echo "</tr></thead>";
-        while($row = mysqli_fetch_array($result)){
-          echo "<tbody><tr>";
-            echo "<td>" . $row['id'] . "</td>";
-            echo "<td>" . $row['book_name'] . "</td>";
-            echo "<td>" . $row['author'] . "</td>";
-            echo "<td>" . $row['category'] . "</td>";
-            echo "<td>" . $row['copies'] . "</td>";
-            echo "<td>" . $row['publishers'] . "</td>";
-            echo "<td><a class='badge badge-success' href='admin_book_issue.php?id=".$row['id']."'>Issue book</a> <a href='admin_book_edit.php?id=".$row['id']."'><i class='icofont-edit'></i></a> <a class='confirmation' href='admin_book_delete.php?id=".$row['id']."'><i class='icofont-trash'></i></a></td>";
-          echo "</tr></tbody>";
-        }
-        echo "</table>";
-        mysqli_free_result($result);
-    } else{
+    if(mysqli_num_rows($result) > 0){ ?>
+        <table id='book_name' class='col-12 table table-bordered text-center table-hover'>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Book Name</th>
+                    <th>Author</th>
+                    <th>Category</th>
+                    <th>No of Copies</th>
+                    <th>Publishers</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while($row = mysqli_fetch_array($result)){ ?>
+                    <tr>
+                        <td><?php echo $row['id']; ?></td>
+                        <td><?php echo $row['book_name']; ?></td>
+                        <td><?php echo $row['author']; ?></td>
+                        <td><?php echo $row['category']; ?></td>
+                        <td><?php echo $row['copies']; ?></td>
+                        <td><?php echo $row['publishers']; ?></td>
+                        <td>
+                            <a class='badge badge-success' href="admin_book_issue.php?id=<?php echo $row['id']; ?>">Issue book</a>
+                            <a href="admin_book_edit.php?id=<?php echo $row['id']; ?>"><i class='icofont-edit'></i></a>
+                            <a class='confirmation' href="admin_book_delete.php?id=<?php echo $row['id']; ?>"><i class='icofont-trash'></i></a>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    <?php } else{
         echo "<div class='text-center alert bg-dark text-white'>No Books Found</div>";
   }}
     ?>

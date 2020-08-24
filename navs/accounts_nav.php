@@ -15,13 +15,15 @@
                     <a href="accounts_dashboard.php">Dashboard</a>
                 </li>
                 <li>
-                    <a href="accounts_add_voucher.php">Add New Voucher</a>
-                </li>
-                <li>
-                    <a href="accounts_recieve_voucher.php">Recieve Fee</a>
-                </li>
-                <li>
-                    <a href="accounts_all_voucher.php">All Vouchers</a>
+                    <a href="#accountsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Accounts</a>
+                    <ul class="collapse list-unstyled" id="accountsSubmenu">
+                        <li>
+                            <a href="accountant_voucher_add.php">Voucher Add</a>
+                        </li>
+                        <li>
+                            <a href="accountant_voucher_list.php">Voucher Lists</a>
+                        </li>
+                    </ul>
                 </li>
 				<li class="nav-item bg-danger rounded">
                     <a class="nav-link" href="logout.php">Logout</a>

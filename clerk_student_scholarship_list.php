@@ -1,9 +1,9 @@
 <?php
 session_start();
-	if ($_SESSION['user'] != 'Admin'){
-		header('location:index.php');
+    if ($_SESSION['user'] != 'Clerk'){
+        header('location:index.php');
 
-	}
+    }
 ?> 
 <!DOCTYPE html>
 <html>
@@ -13,18 +13,18 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Student Registration Section</title>
-	<?php 
-	include"system/fileslink.php";
-	?>
+    <title>Dashboard: Clerk</title>
+    <?php 
+    include"system/fileslink.php";
+    ?>
 </head>
 
 <body style="background-image: url('assets/img/logo.png'); background-attachment: fixed;">
     <div class="wrapper">
         <!-- Sidebar  -->
         <?php 
-      include"navs/admin_nav.php";
-    ?>
+            include"navs/clerk_nav.php";
+        ?>
 
         <!-- Page Content  -->
         <div id="content">
@@ -47,19 +47,18 @@ session_start();
   <div class="col-lg-12 col-md-12 bg-white">      
   <p class="card-text">
   <?php
-    $sql ="SELECT fee_voucher.*,programs.program,students.rollno FROM fee_voucher INNER JOIN programs ON programs.id=fee_voucher.program_id INNER JOIN students ON students.id = fee_voucher.student_id";
+    $sql ="SELECT student_scholarships.*,scholarships.name,students.rollno FROM student_scholarships INNER JOIN scholarships ON scholarships.id=student_scholarships.scholarship_id INNER JOIN students ON students.id = student_scholarships.student_id";
 if($result = mysqli_query($con, $sql)){
     if(mysqli_num_rows($result) > 0){ ?>
-        <table id="fee_voucher" class="col-12 table table-bordered text-center table-hover">
+        <table id="scholarships" class='col-12 table table-bordered text-center table-hover'>
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Voucher No</th>
-                    <th>Roll No</th>
+                    <th>Rollno</th>
+                    <th>Scholarship</th>
                     <th>Amount</th>
                     <th>Session</th>
                     <th>Semester</th>
-                    <th>Issue Date</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -67,22 +66,21 @@ if($result = mysqli_query($con, $sql)){
                 <?php while($row = mysqli_fetch_array($result)){ ?>
                     <tr>
                         <td><?php echo $row['id']; ?></td>
-                        <td><?php echo $row['voucher_no']; ?></td>
                         <td><?php echo $row['rollno']; ?></td>
+                        <td><?php echo $row['name']; ?></td>
                         <td><?php echo $row['amount']; ?></td>
                         <td><?php echo $row['session']; ?></td>
                         <td><?php echo $row['semester']; ?></td>
-                        <td><?php echo $row['issue_date']; ?></td>
                         <td>
-                            <a href="admin_voucher_edit.php?id=<?php echo $row['id']; ?>"><i class='icofont-edit'></i></a>
-                            <a class='confirmation' href="admin_voucher_delete.php?id=<?php echo $row['id']; ?>"><i class='icofont-trash'></i></a>
+                            <a href="clerk_student_scholarship_view.php?id=<?php echo $row['id']; ?>"><i class='icofont-eye'></i></a>
+                            <a href="clerk_student_scholarship_edit.php?id=<?php echo $row['id']; ?>"><i class='icofont-edit'></i></a>
+                            <a class='confirmation' href="clerk_student_scholarship_delete.php?id=<?php echo $row['id']; ?>"><i class='icofont-trash'></i></a>
                         </td>
                     </tr>
                 <?php } ?>
             </tbody>
-        </table>
     <?php } else{
-        echo "<div class='text-center alert bg-dark text-white'>No Vouchers Found</div>";
+        echo "<div class='text-center alert bg-dark text-white'>No Scholarships Found</div>";
   }}
     ?>
 <script type="text/javascript">
@@ -92,19 +90,12 @@ if($result = mysqli_query($con, $sql)){
 </script>
 <script>
 $(document).ready(function() {
-    $('#fee_voucher').DataTable();
+    $('#scholarships').DataTable();
 } );
 </script>
     </p>
       </div>
       </div>
-      
-      
-      
-      
-      
-      
-      
       
       
     </div>

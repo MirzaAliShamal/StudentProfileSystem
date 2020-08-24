@@ -49,31 +49,37 @@ session_start();
   <?php
     $sql ="SELECT student_scholarships.*,scholarships.name,students.rollno FROM student_scholarships INNER JOIN scholarships ON scholarships.id=student_scholarships.scholarship_id INNER JOIN students ON students.id = student_scholarships.student_id";
 if($result = mysqli_query($con, $sql)){
-    if(mysqli_num_rows($result) > 0){
-        echo "<table id='scholarships' class='col-12 table table-bordered text-center table-hover'>";
-          echo "<thead><tr>";
-            echo "<th>Id</th>";
-            echo "<th>Rollno</th>";
-            echo "<th>Scholarship</th>";
-            echo "<th>Amount</th>";
-            echo "<th>Session</th>";
-            echo "<th>Semester</th>";
-            echo "<th>Action</th>";
-          echo "</tr></thead>";
-        while($row = mysqli_fetch_array($result)){
-          echo "<tbody><tr>";
-            echo "<td>" . $row['id'] . "</td>";
-            echo "<td>" . $row['rollno'] . "</td>";
-            echo "<td>" . $row['name'] . "</td>";
-            echo "<td>" . $row['amount'] . "</td>";
-            echo "<td>" . $row['session'] . "</td>";
-            echo "<td>" . $row['semester'] . "</td>";
-            echo "<td><a href='admin_student_scholarship_view.php?id=".$row['id']."'><i class='icofont-eye'></i></a> <a href='admin_student_scholarship_edit.php?id=".$row['id']."'><i class='icofont-edit'></i></a> <a class='confirmation' href='admin_student_scholarship_delete.php?id=".$row['id']."'><i class='icofont-trash'></i></a></td>";
-          echo "</tr></tbody>";
-        }
-        echo "</table>";
-        mysqli_free_result($result);
-    } else{
+    if(mysqli_num_rows($result) > 0){ ?>
+        <table id="scholarships" class='col-12 table table-bordered text-center table-hover'>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Rollno</th>
+                    <th>Scholarship</th>
+                    <th>Amount</th>
+                    <th>Session</th>
+                    <th>Semester</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while($row = mysqli_fetch_array($result)){ ?>
+                    <tr>
+                        <td><?php echo $row['id']; ?></td>
+                        <td><?php echo $row['rollno']; ?></td>
+                        <td><?php echo $row['name']; ?></td>
+                        <td><?php echo $row['amount']; ?></td>
+                        <td><?php echo $row['session']; ?></td>
+                        <td><?php echo $row['semester']; ?></td>
+                        <td>
+                            <a href="admin_student_scholarship_view.php?id=<?php echo $row['id']; ?>"><i class='icofont-eye'></i></a>
+                            <a href="admin_student_scholarship_edit.php?id=<?php echo $row['id']; ?>"><i class='icofont-edit'></i></a>
+                            <a class='confirmation' href="admin_student_scholarship_delete.php?id=<?php echo $row['id']; ?>"><i class='icofont-trash'></i></a>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+    <?php } else{
         echo "<div class='text-center alert bg-dark text-white'>No Scholarships Found</div>";
   }}
     ?>

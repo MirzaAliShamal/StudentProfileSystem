@@ -1,6 +1,6 @@
 <?php
 session_start();
-	if ($_SESSION['user'] != 'Admin'){
+	if ($_SESSION['user'] != 'Librarian'){
 		header('location:index.php');
 
 	}
@@ -13,17 +13,17 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Student Registration Section</title>
-	<?php 
-	include"system/fileslink.php";
-	?>
+    <title>Dashboard: Library</title>
+  <?php 
+  include"system/fileslink.php";
+  ?>
 </head>
 
 <body style="background-image: url('assets/img/logo.png'); background-attachment: fixed;">
     <div class="wrapper">
         <!-- Sidebar  -->
         <?php 
-      include"navs/admin_nav.php";
+      include"navs/librarian_nav.php";
     ?>
 
         <!-- Page Content  -->
@@ -64,8 +64,8 @@ if($result = mysqli_query($con, $sql)){
               <td><?php echo $row['id']; ?></td>
               <td><?php echo $row['category']; ?></td>
               <td>
-                <a href="admin_book_category_edit.php?id=<?php echo $row['id']; ?>"><i class='icofont-edit'></i></a>
-                <a class='confirmation' href="admin_book_category_delete.php?id=<?php echo $row['id']; ?>"><i class='icofont-trash'></i></a>
+                <a href="librarian_book_category_edit.php?id=<?php echo $row['id']; ?>"><i class='icofont-edit'></i></a>
+                <a class='confirmation' href="librarian_book_category_delete.php?id=<?php echo $row['id']; ?>"><i class='icofont-trash'></i></a>
               </td>
             </tr>
           <?php } ?>

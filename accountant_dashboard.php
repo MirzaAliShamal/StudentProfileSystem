@@ -1,10 +1,10 @@
 <?php
 session_start();
-	if ($_SESSION['user'] != 'Librarian'){
+	if ($_SESSION['user'] != 'Accountant'){
 		header('location:index.php');
 
 	}
-?> 
+?>     
 <!DOCTYPE html>
 <html>
 
@@ -13,7 +13,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Dashboard: Library</title>
+    <title>Dashboard: Accounts Section</title>
 	<?php 
 	include"system/fileslink.php";
 	?>
@@ -23,7 +23,7 @@ session_start();
     <div class="wrapper">
         <!-- Sidebar  -->
         <?php 
-			include"navs/librarian_nav.php";
+			include"navs/accounts_nav.php";
 		?>
 
         <!-- Page Content  -->
@@ -41,38 +41,40 @@ session_start();
 
                 </div>
             </nav>
-		<div class="row container-fluid ml-1">
-			
-			<div class="card col-lg-6 col-xs-6 bg-white text-center rounded">
-				<div class="card-body">
-					Total Books
-					<h1>
-					<?php
-							$total_books = mysqli_query($con, "SELECT COUNT(*) AS `count` FROM `books");
-							$row = mysqli_fetch_assoc($total_books);
-							$ans1 = $row['count'];
-							echo $ans1;
-						?>
-					</h1>
+			<div class="row container-fluid ml-1">
+				
+				<div class="card col-lg-6 col-xs-6 bg-white text-center rounded">
+					<div class="card-body">
+						Number of Students
+						<h1>
+						<?php
+								$result = mysqli_query($con, "SELECT COUNT(*) AS `count` FROM `students");
+								$row = mysqli_fetch_assoc($result);
+								$count = $row['count'];
+								echo $count;
+							?>
+						</h1>
+					</div>
 				</div>
-			</div>
-			
-			<div class="card col-lg-6 col-xs-6 bg-white text-center rounded">
-				<div class="card-body">
-					Books Issued
-					<h1>
-					<?php
-							$stock = mysqli_query($con, "SELECT COUNT(*) as issued FROM books_issued where status = 'issued'");
-							$row = mysqli_fetch_assoc($stock);
-							$ans2 = $row['issued'];
-							echo $ans2;
-						?>
-					</h1>
+				
+				<div class="card col-lg-6 col-xs-6 bg-white text-center rounded">
+					<div class="card-body">
+						Number of Vouchers
+						<h1>
+						<?php
+								$result = mysqli_query($con, "SELECT COUNT(*) AS COUNTS from fee_voucher");
+								$row = mysqli_fetch_assoc($result);
+								$count = $row['COUNTS'];
+								echo $count;
+							?>
+						</h1>
+					</div>
 				</div>
+				
+				
 			</div>
-		</div>
 
-		<div class="row container-fluid mt-5">
+			<div class="row container-fluid mt-5">
 				<div class="col-12 bg-white pt-1 pb-4">			
 					<p class="card-text ">
 					<h2 class="text-center">Search Student Record</h2>
@@ -99,18 +101,11 @@ session_start();
 			<div class="row container-fluid mt-5 ajax-load">
 				
 			</div>
-
-<script>
-$(document).ready(function() {
-    $('#books').DataTable();
-} );
-</script>
-				</p>
-			</div>      
-	</div> 
+			
+		</div> 
     </div>
-	</div>
-	
+</div>
+
 <script type="text/javascript">
 	$(document).ready(function () {
 		$('#sidebarCollapse').on('click', function () {
@@ -121,7 +116,7 @@ $(document).ready(function() {
 		    var optionSelected = $(this).find("option:selected").val();
 		    $.ajax({
 	            type: "GET",
-	            url: 'librarian_ajax.php?id='+optionSelected,
+	            url: 'accountant_ajax.php?id='+optionSelected,
 	            success: function(response)
 	            {
 	                var jsonData = JSON.parse(response);
