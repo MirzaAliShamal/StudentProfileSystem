@@ -30,7 +30,17 @@ session_start();
 <?php 
 if (isset($_GET["id"])) {
     
-  mysqli_query($con,"UPDATE books_issued set status ='received' WHERE id='" . $_GET['id'] . "'");
+  $result = mysqli_query($con,"UPDATE books_issued set status ='received' WHERE id='" . $_GET['id'] . "'");
+
+  $book_check = mysqli_query($con,"SELECT * FROM books_issued WHERE id='" . $_GET['id'] . "'");
+  $book_check_row= mysqli_fetch_array($book_check);
+  $book_id = $book_check_row['book_id'];
+
+  $check = mysqli_query($con,"SELECT * FROM books WHERE id='" . $book_id . "'");
+  $check_row= mysqli_fetch_array($check);
+  $copies = $check_row['no_of_copies'];
+  $copies = $copies + 1;
+  $update = mysqli_query($con,"UPDATE books set no_of_copies = '" . $copies . "' WHERE id='" . $book_id . "'");
 echo"<script>alert('Record Updated.!')
   location.replace('librarian_book_issued.php')
 </script>";
@@ -59,37 +69,35 @@ echo"<script>alert('Record Updated.!')
   <?php
     $sql ="SELECT books_issued.*,books.book_name,students.rollno FROM books_issued INNER JOIN books ON books.id=books_issued.book_id INNER JOIN students ON students.id = books_issued.student_id WHERE books_issued.status='issued'";
 if($result = mysqli_query($con, $sql)){
-    if(mysqli_num_rows($result) > 0){
-        echo "<table id='book_name' class='col-12 table table-bordered text-center table-hover'>";
-          echo "<thead><tr>";
-            echo "<th>Id</th>";
-            echo "<th>Book Name</th>";
-            echo "<th>Student Rollno</th>";
-            echo "<th>Status</th>";
-            echo "<th>Issued At</th>";
-            echo "<th>Action</th>";
-          echo "</tr></thead>";
-        while($row = mysqli_fetch_array($result)){
-          echo "<tbody><tr>";
-            echo "<td>" . $row['id'] . "</td>";
-            echo "<td>" . $row['book_name'] . "</td>";
-            echo "<td>" . $row['rollno'] . "</td>";
-            echo "<td><span class='badge badge-success'>" . $row['status'] . "</span></td>";
-            echo "<td>" . $row['created_at'] . "</td>";
-            echo "<td><a class='btn btn-sm btn-danger' href='librarian_book_issued.php?id=".$row['id']."'>Receive book</a></td>";
-          echo "</tr></tbody>";
-        }
-        echo "</table>";
-        mysqli_free_result($result);
-    } else{
+    if(mysqli_num_rows($result) > 0){ ?>
+      <table id="book_name" class='col-12 table table-bordered text-center table-hover'>
+        <thead>
+          <tr>
+            <th>Book Name</th>
+            <th>Copy No</th>
+            <th>Student Rollno</th>
+            <th>Status</th>
+            <th>Issued At</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php while($row = mysqli_fetch_array($result)){ ?>
+            <tr>
+              <td><?php echo $row['book_name']; ?></td>
+              <td><?php echo $row['copy_no']; ?></td>
+              <td><?php echo $row['rollno']; ?></td>
+              <td><span class='badge badge-success'><?php echo $row['status']; ?></span></td>
+              <td><?php echo $row['created_at']; ?></td>
+              <td><a class="btn btn-sm btn-danger" href="librarian_book_issued.php?id=<?php echo $row['id']; ?>">Receive book</a></td>
+            </tr>
+          <?php } ?>
+        </tbody>
+      </table>
+    <?php } else{
         echo "<div class='text-center alert bg-dark text-white'>No Issued Books Found</div>";
   }}
     ?>
-<script type="text/javascript">
-    $('.confirmation').on('click', function () {
-        return confirm('Are you sure to Delete?');
-    });
-</script>
 <script>
 $(document).ready(function() {
     $('#book_name').DataTable();

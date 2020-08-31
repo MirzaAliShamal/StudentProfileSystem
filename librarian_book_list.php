@@ -17,6 +17,11 @@ session_start();
     <?php 
     include"system/fileslink.php";
     ?>
+    <style>
+        .disabled{
+            cursor: not-allowed;
+        }   
+    </style>
 </head>
 
 <body style="background-image: url('assets/img/logo.png'); background-attachment: fixed;">
@@ -58,6 +63,7 @@ if($result = mysqli_query($con, $sql)){
                     <th>Author</th>
                     <th>Category</th>
                     <th>No of Copies</th>
+                    <th>ISBN</th>
                     <th>Publishers</th>
                     <th>Action</th>
                 </tr>
@@ -69,10 +75,17 @@ if($result = mysqli_query($con, $sql)){
                         <td><?php echo $row['book_name']; ?></td>
                         <td><?php echo $row['author']; ?></td>
                         <td><?php echo $row['category']; ?></td>
-                        <td><?php echo $row['copies']; ?></td>
+                        <td><?php echo $row['no_of_copies']; ?></td>
+                        <td><?php echo $row['ISBN']; ?></td>
                         <td><?php echo $row['publishers']; ?></td>
                         <td>
-                            <a class='badge badge-success' href="librarian_book_issue.php?id=<?php echo $row['id']; ?>">Issue book</a>
+                            <?php  
+                            $issue_res = mysqli_query($con, "SELECT * FROM books_issued WHERE book_id = '".$row['id']."' AND status = 'issued'");
+                            if (mysqli_num_rows($issue_res) > 0) { ?>
+                                <a class='badge badge-success disabled'>Issue book</a>
+                            <?php } else { ?>
+                                <a class='badge badge-success' href="librarian_book_issue.php?id=<?php echo $row['id']; ?>">Issue book</a>
+                            <?php } ?>
                             <a href="librarian_book_edit.php?id=<?php echo $row['id']; ?>"><i class='icofont-edit'></i></a>
                             <a class='confirmation' href="librarian_book_delete.php?id=<?php echo $row['id']; ?>"><i class='icofont-trash'></i></a>
                         </td>

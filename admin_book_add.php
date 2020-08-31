@@ -67,8 +67,12 @@ session_start();
             </select>
           </div>
           <div class="form-group">
-            <label for="copies">No of Copies</label>
-            <input type="number"  class="form-control"  name="copies"  id="copies" placeholder="e.g. 1" required>
+            <label for="no_of_copies">No of Copies</label>
+            <input type="number"  class="form-control"  name="no_of_copies"  id="no_of_copies" placeholder="e.g. 2" required>
+          </div>
+          <div class="form-group">
+            <label for="ISBN">ISBN</label>
+            <input type="text"  class="form-control"  name="ISBN"  id="ISBN" placeholder="e.g. #6441654" required>
           </div>
           <div class="form-group">
             <label for="publishers">Publishers</label>
@@ -84,7 +88,8 @@ if (isset($_POST["submit"])) {
   $book_name =  $_POST["book_name"];
   $author =  $_POST["author"];
   $book_category_id =  $_POST["book_category_id"];
-  $copies =  $_POST["copies"];
+  $no_of_copies =  $_POST["no_of_copies"];
+  $ISBN =  $_POST["ISBN"];
   $publishers =  $_POST["publishers"];
 
   $validation_sql = "SELECT * FROM books WHERE book_name = '" . $book_name . "'";
@@ -92,7 +97,7 @@ if (isset($_POST["submit"])) {
   if (mysqli_num_rows($validation_result) > 0) {
     echo"<script>alert('Book Already Exists!');</script>";
   } else{
-    $sql = "INSERT INTO `books`(`book_name`, `author`, `book_category_id`, `copies`, `publishers`) VALUES ('$book_name','$author','$book_category_id','$copies','$publishers')";
+    $sql = "INSERT INTO `books`(`book_name`, `author`, `book_category_id`, `no_of_copies`, `ISBN`, `publishers`) VALUES ('$book_name','$author','$book_category_id', '$no_of_copies','$ISBN','$publishers')";
     $result = $con->query($sql);
     echo"<script>alert('Book Added into system');</script>";
   }

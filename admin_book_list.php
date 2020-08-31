@@ -17,6 +17,11 @@ session_start();
 	<?php 
 	include"system/fileslink.php";
 	?>
+	<style>
+		.disabled{
+			cursor: not-allowed;
+		}	
+	</style>
 </head>
 
 <body style="background-image: url('assets/img/logo.png'); background-attachment: fixed;">
@@ -53,11 +58,11 @@ if($result = mysqli_query($con, $sql)){
         <table id='book_name' class='col-12 table table-bordered text-center table-hover'>
             <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Book Name</th>
                     <th>Author</th>
                     <th>Category</th>
                     <th>No of Copies</th>
+                    <th>ISBN</th>
                     <th>Publishers</th>
                     <th>Action</th>
                 </tr>
@@ -65,14 +70,19 @@ if($result = mysqli_query($con, $sql)){
             <tbody>
                 <?php while($row = mysqli_fetch_array($result)){ ?>
                     <tr>
-                        <td><?php echo $row['id']; ?></td>
                         <td><?php echo $row['book_name']; ?></td>
                         <td><?php echo $row['author']; ?></td>
                         <td><?php echo $row['category']; ?></td>
-                        <td><?php echo $row['copies']; ?></td>
+                        <td><?php echo $row['no_of_copies']; ?></td>
+                        <td><?php echo $row['ISBN']; ?></td>
                         <td><?php echo $row['publishers']; ?></td>
                         <td>
-                            <a class='badge badge-success' href="admin_book_issue.php?id=<?php echo $row['id']; ?>">Issue book</a>
+                        	<?php  
+                        	if ($row['no_of_copies'] <= 0) { ?>
+                        		<a class='badge badge-success disabled'>Issue book</a>
+                        	<?php } else { ?>
+                        		<a class='badge badge-success' href="admin_book_issue.php?id=<?php echo $row['id']; ?>">Issue book</a>
+                        	<?php } ?>
                             <a href="admin_book_edit.php?id=<?php echo $row['id']; ?>"><i class='icofont-edit'></i></a>
                             <a class='confirmation' href="admin_book_delete.php?id=<?php echo $row['id']; ?>"><i class='icofont-trash'></i></a>
                         </td>

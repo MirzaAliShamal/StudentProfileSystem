@@ -68,6 +68,10 @@ $rowcount=mysqli_num_rows($result);
 		<label for="exampleInputEmail1">Book Name</label>
 		<input type="text" class="form-control"  name="book_name" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?php echo $row['book_name']; ?>" readonly required>
 		</div>
+		<div class="form-group">
+			<label for="copy_no">Copy No</label>
+			<input type="text" class="form-control" name="copy_no" id="copy_no" required>
+		</div>
 		<label for="exampleInputEmail1">Student Roll No.</label>
 		<select class="form-control" id="rollno" style="width: 100%;" name="student_id">
 		<option>Select Student</option>
@@ -93,14 +97,21 @@ if (isset($_POST["submit"])) {
 	
 	$book_id =  $_GET['id'];
 	$student_id =  $_POST["student_id"];
+	$copy_no = $_POST['copy_no'];
 	
-	$validation_sql = "SELECT * FROM books_issued WHERE student_id = '" . $student_id . "' AND book_id = '" . $book_id . "'";
+	$validation_sql = "SELECT * FROM books_issued WHERE student_id = '" . $student_id . "' AND book_id = '" . $book_id . "' AND copy_no = '" . $copy_no . "'";
   	$validation_result = mysqli_query($con, $validation_sql);
   	if (mysqli_num_rows($validation_result) > 0) {
 	    echo"<script>alert('Sorry, Book Already Issud to this student!');</script>";
 	} else{
-	  	$sql = "INSERT INTO `books_issued`(`student_id`, `book_id`, `status`) VALUES ('$student_id','$book_id','issued')";
+	  	$sql = "INSERT INTO `books_issued`(`student_id`, `book_id`, `copy_no`, `status`) VALUES ('$student_id','$book_id', '$copy_no','issued')";
 	  	$result = $con->query($sql);
+
+	  	$check = mysqli_query($con,"SELECT * FROM books WHERE id='" . $book_id . "'");
+		$check_row= mysqli_fetch_array($check);
+		$copies = $check_row['no_of_copies'];
+		$copies = $copies - 1;
+		$update = mysqli_query($con,"UPDATE books set no_of_copies = '" . $copies . "' WHERE id='" . $book_id . "'");
 	  	echo"<script>alert('Book Issued to the Student');</script>";
 	}
 }
